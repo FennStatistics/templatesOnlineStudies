@@ -261,4 +261,137 @@ const textObj = {
 
   `,
 
+  // Headphone Screening info
+   hs_info: `
+   <header>
+   <h2>Testung Ton</h2>
+   <p class="font-weight-bold">
+   Sie <em>müssen</em> während der Studie Ton wahrnehmen können!
+ </p>
+ </header>
+ 
+ 
+ 
+ <main class="content-horizontal-center content-vertical-center">
+   <div class="w-l text-justify">
+       <section>
+       Wenn Sie noch keine Kopfhörer tragen, bitte ziehen Sie welche an, bevor Sie fortfahren bzw. stellen Sie sicher, dass ihre Computerlautsprecher eingeschaltet sind.
+       </section>
+       <br>
+       <section>
+       Wir werden nun kurz testen, ob Sie Ton wahrnehmen können. Führen Sie bitte folgende Schritte aus:
+       </section>
+       <ol>
+       <li><strong>Stellen Sie die Lautstärke Ihres Computers auf etwa 25%</strong> seines maximalen Niveaus ein.</li>
+       <li><a id="hs_calibration" href="#" onclick="playAudio();">Klicken Sie hier</a>, um einen Kalibrierungston zu hören. <strong>Erhöhen Sie die Lautstärke Ihres Computers, bis der Kalibrierungston laut, aber angenehm ist.</strong> Sie können ihn so oft wie nötig anhören.</li>
+     </ol>
+     <p>Klicken Sie auf "Weiter", sobald Sie die Lautstärke des Computers auf ein lautes, aber angenehmes Niveau eingestellt haben</p>
+   </div>
+ </main>
+ 
+ <form id="page-form">
+ </form>
+ 
+ <footer class="content-vertical-center content-horizontal-right">
+   <button id="continue" type="submit" form="page-form">
+       Weiter &rarr;
+   </button>
+ </footer>
+   `,
+   hs_task: `
+   <header>
+   <h2>Testung Ton</h2>
+ </header>
+ 
+ 
+ 
+ <main class="content-horizontal-center content-vertical-center">
+   <div class="w-l text-justify">
+       <section>
+       Im Folgenden hören Sie mehrere Sequenzen aus jeweils zwei Tönen, getrennt durch Stille. <strong>Ihre Aufgabe ist es zu beurteilen, welcher dieser Töne der leiseste oder sanfteste war.</strong>
+       </section>
+       <br>
+       <section>
+       Wir werden Sie nach jeder Sequenz aus zwei Tönen um Ihr Urteil bitten. <strong>Die Töne werden nur einmal abgespielt</strong>, daher bitten wir Sie, genau zuzuhören.
+        </section>
+ 
+     <p>Klicken Sie auf "Weiter", um mit der Aufgabe zu beginnen.</p>
+   </div>
+ </main>
+ 
+ <form id="page-form">
+ </form>
+ 
+ <footer class="content-vertical-center content-horizontal-right">
+   <button id="continue" type="submit" form="page-form">
+       Weiter &rarr;
+   </button>
+ </footer>
+   `,
+   hs_sound: `
+   <header>
+   <h2>Bitte hören Sie genau auf die Töne</h2>
+ </header>
+ 
+ 
+ <main class="content-horizontal-center content-vertical-center" style="height:300px;">
+ </main>
+
+
+ <footer class="content-vertical-center content-horizontal-center">
+ Die Studie wird automatisch fortgesetzt
+ </footer>
+   `,
+   hs_judgement: `
+   <header>
+   </header>
+ 
+ 
+ <main class="content-horizontal-center content-vertical-center">
+ <div>
+ <p class="font-weight-bold">Welcher der zwei Töne war der leiseste (ruhigste)?</p>
+ <div>
+   <button
+     id="choice-1"
+     style="
+       font-size: 64px;
+       width: 140px;
+       height: 150px;
+       border-radius: 6px;
+       margin: 12px;
+     "
+   >
+     1
+   </button>
+   <button
+     id="choice-2"
+     style="
+       font-size: 64px;
+       width: 140px;
+       height: 150px;
+       border-radius: 6px;
+       margin: 12px;
+     "
+   >
+     2
+   </button>
+ </div>
+ </main>
+ 
+ <footer class="content-vertical-center content-horizontal-center">
+Treffen Sie eine Entscheidung, um die Studie fortzusetzen.
+ </footer>
+   `,
+   hs_trap: `
+   <header></header>
+   <main class="content-horizontal-center content-vertical-center">
+   <div class="w-l text-justify">
+   <section>
+   Ihr System bietet nicht die erforderliche Audioqualität, um diese Studie abzuschließen. Leider bedeutet das, dass die Studie für Sie beendet ist. Sie können
+       jetzt den Bildschirm schließen. Drücken Sie die <kbd>Esc</kbd>-Taste, um den Vollbildmodus zu beenden.
+   </section>
+   </div>
+   </main>   
+   `,
+
 };

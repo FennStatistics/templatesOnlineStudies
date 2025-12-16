@@ -312,6 +312,199 @@ const storeAudioData = function (testAudio = false) {
   }
 };
 
+
+
+
+
+
+/* 
+################### test headphones ###################
+see: https://link.springer.com/article/10.3758/s13414-017-1361-2
+*/
+// audio calibration file
+function playAudio() {
+  var audio = new Audio('src/static/Audio_HS/noise_calib_stim.wav');
+  audio.play();
+}
+
+
+const HeadphoneScreening_Info_htmlForm = new lab.html.Form({
+  title: "Headphone Screening info",
+  content: textObj.hs_info,
+  messageHandlers: {
+    run: function anonymous() {
+    },
+    commit: function anonymous() {
+      // progress bar
+      numElementsCounter++;
+      document.querySelector(".progress-bar").style.width =
+        (numElementsCounter / numElements) * 100 + "%";
+    },
+  },
+});
+
+
+const HeadphoneScreening_Task_htmlForm = new lab.html.Form({
+  title: "Headphone Screening task",
+  content: textObj.hs_task,
+  messageHandlers: {
+    run: function anonymous() {
+    },
+    commit: function anonymous() {
+      // progress bar
+      numElementsCounter++;
+      document.querySelector(".progress-bar").style.width =
+        (numElementsCounter / numElements) * 100 + "%";
+    },
+  },
+});
+
+const HeadphoneScreening_Sound_htmlForm = new lab.html.Screen({
+  title: "Headphone Screening sound",
+  content: textObj.hs_sound,
+  timeline: [{
+    type: "sound",
+    start: 0,
+    stop: 1000,
+    priority: 0,
+    payload: {
+      gain: 1,
+      pan: 0,
+      rampUp: 0,
+      rampDown: 0,
+      src: `src/static/Audio_HS/` + '${parameters.stimulus_1}' +  `.wav`,
+    }
+  },
+  {
+    type: "sound",
+    start: 1500,
+    stop: 2500,
+    priority: 0,
+    payload: {
+      gain: 1,
+      pan: 0,
+      rampUp: 0,
+      rampDown: 0,
+      src: `src/static/Audio_HS/` + '${parameters.stimulus_2}' +  `.wav`,
+    }
+  }],
+  timeout: 3000,
+  messageHandlers: {
+    run: function anonymous() {
+    },
+    commit: function anonymous() {
+      // progress bar
+    },
+  },
+});
+
+const HeadphoneScreening_Judgement_htmlForm = new lab.html.Screen({
+  title: "Headphone Screening judgement",
+  content: textObj.hs_judgement,
+  responses: {
+    "click #choice-1": "1",
+    "click #choice-2": "2",
+  },
+  correctResponse: "${parameters.position_correct}",
+  messageHandlers: {
+    run: function anonymous() {
+    },
+    commit: function anonymous() {
+    },
+  },
+});
+
+
+
+const HeadphoneScreening_task_sequence = new lab.flow.Sequence({
+  title: "Headphone Screening task sequence",
+  shuffle: false,
+  tardy: true,
+  content: [
+    HeadphoneScreening_Sound_htmlForm,
+    HeadphoneScreening_Judgement_htmlForm,
+  ],
+});
+
+
+const HeadphoneScreening_Loop = new lab.flow.Loop({
+  template: HeadphoneScreening_task_sequence,
+  templateParameters: [
+    {
+      "stimulus_1": "louder1",
+      "stimulus_2": "softest",
+      "position_correct": "2"
+    },
+    {
+      "stimulus_1": "softest",
+      "stimulus_2": "louder1",
+      "position_correct": "1"
+    }
+  ],
+  sample: {
+    mode: "draw-shuffle",
+    n: "6",
+  },
+  messageHandlers: {
+    run: function anonymous() {
+    },
+    end: function anonymous() {
+      var vec_responses = study.options.datastore.extract('correct', 'Headphone Screening judgement');
+      console.log("vec_responses:", vec_responses);
+      perc_correct_HS = lab.util.stats.mean(vec_responses);
+      console.log("perc_correct_HS:", perc_correct_HS);
+
+      if (typeof jatos.jQuery === "function") {
+        // save number of correct responses HS
+        study.options.datastore.set(
+          "number_correct_HS",
+          lab.util.stats.sum(vec_responses)
+        );
+    }
+    },
+  },
+})
+
+
+// trap
+const HeadphoneScreening_Trap_htmlForm = new lab.html.Form({
+  title: "Headphone Screening trap",
+  content: textObj.hs_trap,
+  tardy: true,
+  skip:  '${ perc_correct_HS > 2/3 }',
+  messageHandlers: {
+    run: function anonymous() {
+      // progress bar
+      document.querySelector(".progress-bar").style.width = 100 + "%";
+    },
+  },
+});
+
+
+
+const HeadphoneScreening_sequence = new lab.flow.Sequence({
+  title: "Headphone Screening sequence",
+  shuffle: false,
+  tardy: true,
+  content: [
+    HeadphoneScreening_Info_htmlForm,
+    HeadphoneScreening_Task_htmlForm,
+    HeadphoneScreening_Loop,
+    HeadphoneScreening_Trap_htmlForm,
+  ],
+});
+
+
+
+
+
+
+
+
+
+
+
+
 /* 
 ################### 1) Test Audio ###################
 */
@@ -577,6 +770,7 @@ const study = new lab.flow.Sequence({
     InformConsentNO_htmlForm,
 
    
+    // HeadphoneScreening_sequence, // potentially test headphones of participants
     // >>> record audio phase
     TestAudio_htmlForm,
     questionAnswering,
